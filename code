@@ -30,6 +30,7 @@ img1_bg=cv2.bitwise_and(roi,roi,mask=mask)
 #take only text from small image
 img2_fg=cv2.bitwise_and(text_img,text_img,mask=inv_mask)
 
+# create the postcard with combined text and background image
 final=cv2.add(img1_bg,img2_fg)
 img[0:rows,0:cols]=final
 # cv2.imshow("Img",img2_fg)
