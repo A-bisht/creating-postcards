@@ -1,0 +1,40 @@
+# import the necessary libraries
+import os
+import cv2 
+import numpy as np
+
+# Import the background and foreground text/image
+path=r'directory' % fill in the [directory] to the image folder
+filename1='Ocean.JPG'
+filename2='text.jfif'
+background_img=cv2.imread(path+'/'+filename1)
+foreground_img=cv2.imread(path+'/'+filename2)
+
+# Resize the text image if necessary
+factor=8
+rows=int(foreground_img.shape[0]*factor)
+cols=int(foreground_img.shape[1]*factor)
+dim=(rows,cols)
+foreground_img=cv2.resize(foreground_img,dim,interpolation = cv2.INTER_AREA)
+
+# Create a region of interest (ROI) on the background image
+rows,cols,colors=text_img.shape
+roi=img[0:rows,0:cols]
+
+#create a mask of text and its inv mask
+text_grey=cv2.cvtColor(text_img,cv2.COLOR_BGR2GRAY) #convert to greyscale
+ret,mask=cv2.threshold(text_grey,200,255,cv2.THRESH_BINARY) #create mask
+inv_mask=cv2.bitwise_not(mask) #create invert mask
+#black out the area of text on big image
+img1_bg=cv2.bitwise_and(roi,roi,mask=mask)
+#take only text from small image
+img2_fg=cv2.bitwise_and(text_img,text_img,mask=inv_mask)
+
+final=cv2.add(img1_bg,img2_fg)
+img[0:rows,0:cols]=final
+# cv2.imshow("Img",img2_fg)
+# cv2.waitKey(5000)
+# cv2.destroyAllWindows()
+cv2.imwrite(r'C:\Users\apbisht\OneDrive - KLA Corporation/postcard.jpg',img)
+
+
